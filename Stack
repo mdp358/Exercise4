@@ -1,0 +1,49 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import rp13.search.interfaces.Agenda;
+
+
+public class Stack<Item_T> implements Agenda<Item_T> {
+
+	private ArrayList<Item_T> stack = new ArrayList<Item_T>();
+	
+	@Override
+	public Iterator<Item_T> iterator() {
+		return stack.iterator();
+	}
+
+	@Override
+	public void push(Item_T _item) {
+		for(int i = stack.size(); i > 0; i--) {
+			stack.set(i+1, stack.get(i));
+		}
+		stack.set(0, _item);
+	}
+
+	@Override
+	public Item_T pop() {
+		return stack.get(0);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		if(stack.size() > 0)
+			return false;
+		else
+			return true;
+	}
+
+	@Override
+	public boolean contains(Item_T _item) {
+		boolean checker = false;
+		for(int i = 0; i < stack.size(); i++) {
+			if (stack.get(i) == _item )
+				checker = true;
+			else
+				checker = false;
+		}
+		return checker;	
+	}
+
+}

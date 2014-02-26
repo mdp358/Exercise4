@@ -1,0 +1,68 @@
+import java.util.ArrayList;
+
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
+import rp13.search.util.ActionStatePair;
+
+public class BFS_EightPuzzle {
+
+	// declare goal state
+	static EightPuzzle goalState = EightPuzzle.orderedEightPuzzle();
+
+	// declare queue agenda
+	static Queue<EightPuzzle> agenda = new Queue<EightPuzzle>();
+
+	// declare explored states
+	static ExploredStates<EightPuzzle> explored = new ExploredStates<EightPuzzle>();
+
+	//declare path
+	static ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> path = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
+
+	public static void search(EightPuzzle currentState) {
+		// declare successor function
+		EightPuzzleSuccessorFunction function = new EightPuzzleSuccessorFunction();
+		// explored.add(currentState);
+		agenda.push(currentState);
+		while (true) {
+			EightPuzzle state = agenda.pop();
+			System.out.println(state);
+			explored.add(state);
+			if (state.equals(goalState)) {
+				break;
+			} else {
+				ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> successors = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
+
+				// get successors
+				function.getSuccessors(state, successors);
+				System.out.println(successors.size());
+				// add successors to agenda
+				for (ActionStatePair<PuzzleMove, EightPuzzle> actionStatePair : successors) {
+					if (!explored.contains(actionStatePair.getState())
+							&& !agenda.contains(actionStatePair.getState())) {
+						agenda.push(actionStatePair.getState());
+						//path.add(actionStatePair);
+					}
+
+				}
+			}
+		}
+	}
+
+	public static ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> getPath() {
+		
+		
+		return path;
+		
+		//NEED WORK
+	}
+
+	public static void main(String[] args) {
+		// declare start state
+		EightPuzzle state = EightPuzzle.randomEightPuzzle();
+
+		search(state);
+		System.out.println("=============================== GOAL STATE REACHED ===============================");
+		System.out.println(getPath());
+	}
+
+}

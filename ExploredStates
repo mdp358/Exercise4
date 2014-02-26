@@ -1,0 +1,35 @@
+import java.util.ArrayList;
+
+
+public class ExploredStates<Item_T> {
+
+	private ArrayList<Item_T> explored = new ArrayList<Item_T>();
+	
+	public void add(Item_T _item) {
+		explored.add(_item);
+	}
+		
+	public boolean contains(Item_T _item) {
+//		boolean checker = false;
+		for(int i = 0; i < explored.size(); i++) {
+			if (explored.get(i).equals(_item) )
+				return true;
+
+		}
+		return false;	
+	}
+	
+	public int size() {
+		return explored.size();
+	}
+	
+	public Item_T get(int i) {
+		return explored.get(i);	
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

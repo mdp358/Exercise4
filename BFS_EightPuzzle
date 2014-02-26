@@ -52,8 +52,7 @@ public class BFS_EightPuzzle {
 		
 		
 		return path;
-		
-		//NEED WORK
+				//NEED WORK
 	}
 
 	public static void main(String[] args) {

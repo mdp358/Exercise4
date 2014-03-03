@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import rp13.search.problem.puzzle.EightPuzzle;
 import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
@@ -7,25 +10,28 @@ import rp13.search.util.ActionStatePair;
 public class BFS_EightPuzzle {
 
 	// declare goal state
-	static EightPuzzle goalState = EightPuzzle.orderedEightPuzzle();
+	EightPuzzle goalState = EightPuzzle.orderedEightPuzzle();
 
 	// declare queue agenda
-	static Queue<EightPuzzle> agenda = new Queue<EightPuzzle>();
+	Queue<EightPuzzle> agenda = new LinkedList<EightPuzzle>();
 
 	// declare explored states
-	static ExploredStates<EightPuzzle> explored = new ExploredStates<EightPuzzle>();
+	ExploredStates<EightPuzzle> explored = new ExploredStates<EightPuzzle>();
 
-	//declare path
-	static ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> path = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
+	// declare path
+	ArrayList<ActionStatePair<EightPuzzle, ActionStatePair<PuzzleMove, EightPuzzle>>> linkToParent = new ArrayList<ActionStatePair<EightPuzzle, ActionStatePair<PuzzleMove, EightPuzzle>>>();
 
-	public static void search(EightPuzzle currentState) {
+	// path: parent, (action, state)
+	ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> path = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
+
+	public void search(EightPuzzle currentState) {
 		// declare successor function
 		EightPuzzleSuccessorFunction function = new EightPuzzleSuccessorFunction();
-		// explored.add(currentState);
-		agenda.push(currentState);
+
+		agenda.add(currentState);
 		while (true) {
-			EightPuzzle state = agenda.pop();
-			System.out.println(state);
+			EightPuzzle state = agenda.remove();
+			// System.out.println(state);
 			explored.add(state);
 			if (state.equals(goalState)) {
 				break;
@@ -34,13 +40,15 @@ public class BFS_EightPuzzle {
 
 				// get successors
 				function.getSuccessors(state, successors);
-				System.out.println(successors.size());
+
 				// add successors to agenda
 				for (ActionStatePair<PuzzleMove, EightPuzzle> actionStatePair : successors) {
 					if (!explored.contains(actionStatePair.getState())
 							&& !agenda.contains(actionStatePair.getState())) {
-						agenda.push(actionStatePair.getState());
-						//path.add(actionStatePair);
+						agenda.add(actionStatePair.getState());
+						ActionStatePair<EightPuzzle, ActionStatePair<PuzzleMove, EightPuzzle>> trio = new ActionStatePair(
+								state, actionStatePair);
+						linkToParent.add(trio);
 					}
 
 				}
@@ -48,20 +56,47 @@ public class BFS_EightPuzzle {
 		}
 	}
 
-	public static ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> getPath() {
-		
-		
+	public ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> getPath(
+			EightPuzzle initialState) {
+		EightPuzzle parent = goalState;
+		ActionStatePair<PuzzleMove, EightPuzzle> start = new ActionStatePair(
+				linkToParent.get(linkToParent.size() - 1).getState()
+						.getAction(), goalState);
+		path.add(start);
+
+		boolean checker = true;
+		while (checker == true) {
+
+			for (int i = linkToParent.size() - 1; i > 0; i--) {
+				if (linkToParent.get(i).getState().getState().equals(parent)) {
+					path.add(linkToParent.get(i).getState());
+					// System.out.println(linkToParent.get(i).getState());
+					parent = linkToParent.get(i).getAction();
+				} else {
+					checker = false;
+				}
+			}
+		}
+
+		Collections.reverse(path);
+
 		return path;
-				//NEED WORK
 	}
 
 	public static void main(String[] args) {
+
+		BFS_EightPuzzle myClass = new BFS_EightPuzzle();
+
 		// declare start state
 		EightPuzzle state = EightPuzzle.randomEightPuzzle();
 
-		search(state);
-		System.out.println("=============================== GOAL STATE REACHED ===============================");
-		System.out.println(getPath());
+		myClass.search(state);
+		System.out
+				.println("=============================== GOAL STATE REACHED; Making Moves! ===============================");
+		System.out.println(state);
+		System.out.println(myClass.getPath(state));
+		System.out.println("Taking: " + myClass.path.size() + " steps");
+
 	}
 
 }

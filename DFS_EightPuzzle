@@ -8,18 +8,18 @@ import rp13.search.util.ActionStatePair;
 public class DFS_EightPuzzle {
 
 	// declare goal state
-	static EightPuzzle goalState = EightPuzzle.orderedEightPuzzle();
+	EightPuzzle goalState = EightPuzzle.orderedEightPuzzle();
 
 	// declare stack agenda
-	static Stack<EightPuzzle> agenda = new Stack<EightPuzzle>();
+	Stack<EightPuzzle> agenda = new Stack<EightPuzzle>();
 
 	// declare explored states
-	static ExploredStates<EightPuzzle> explored = new ExploredStates<EightPuzzle>();
+	ExploredStates<EightPuzzle> explored = new ExploredStates<EightPuzzle>();
 
 	//declare path
-	static ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> path = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
+	ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> path = new ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>>();
 	
-	public static void search(EightPuzzle currentState) {
+	public void search(EightPuzzle currentState) {
 		// declare successor function
 		EightPuzzleSuccessorFunction function = new EightPuzzleSuccessorFunction();
 		
@@ -54,18 +54,21 @@ public class DFS_EightPuzzle {
 		}
 	}
 
-	public static ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> getPath() {
+	public ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> getPath() {
+		//something still wrong
 		return path;
 	}
 
 	public static void main(String[] args) {
+		DFS_EightPuzzle myClass = new DFS_EightPuzzle();
+		
 		// declare start state
 		EightPuzzle state = EightPuzzle.randomEightPuzzle();
 
-		search(state);
+		myClass.search(state);
 		System.out.println("=============================== GOAL STATE FOUND; Making Moves! ===============================");
-		System.out.println(getPath());
-		System.out.println("Taking: " + explored.size() + " steps");
+		System.out.println(myClass.getPath());
+		System.out.println("Taking: " + myClass.explored.size() + " steps");
 	}
 
 }

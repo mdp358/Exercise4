@@ -28,6 +28,7 @@ public class DFS_EightPuzzle {
 			EightPuzzle state = agenda.pop();
 			System.out.println(state);
 			explored.add(state);
+					
 			if (state.equals(goalState)) {
 				break;
 			} else {
@@ -41,16 +42,19 @@ public class DFS_EightPuzzle {
 					if (!explored.contains(actionStatePair.getState())
 							&& !agenda.contains(actionStatePair.getState())) {
 						agenda.push(actionStatePair.getState());
-						path.add(actionStatePair);
 					}
 
 				}
+				for(int i = 0; i < successors.size(); i++){
+					if(agenda.peek().equals( successors.get(i).getState() ) ) //saves the top of the stack --> the node to be explored
+							path.add(successors.get(i));
+				}
+				
 			}
 		}
 	}
 
 	public static ArrayList<ActionStatePair<PuzzleMove, EightPuzzle>> getPath() {
-		//something still wrong
 		return path;
 	}
 

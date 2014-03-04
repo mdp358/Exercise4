@@ -1,0 +1,33 @@
+
+public class MovePair {
+
+	private int move1;
+	private int move2;
+	
+	public MovePair(int move1, int move2) {
+		super();
+		this.move1 = move1;
+		this.move2 = move2;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Swapping positions: ");
+		sb.append(move1);
+		sb.append(" & ");
+		sb.append(move2);
+		
+		String moves = sb.toString();
+		
+		return moves;
+	}
+	
+	public int getMove1() {
+		return move1;
+	}
+	
+	public int getMove2() {
+		return move2;
+	}
+	
+}

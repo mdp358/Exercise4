@@ -1,0 +1,31 @@
+import java.util.Iterator;
+import java.util.Stack;
+
+import rp13.search.interfaces.Agenda;
+
+
+public class DFS_Agenda<ItemT> implements Agenda<ItemT> {
+
+	Stack<ItemT> stack = new Stack<ItemT>();
+	
+	public Iterator<ItemT> iterator() {
+		return stack.iterator();
+	}
+
+	public void push(ItemT _item){
+		stack.push(_item);	
+	}
+
+	public ItemT pop() {
+		return stack.pop();
+	}
+
+	public boolean isEmpty(){
+		return stack.empty();
+	}
+
+	public boolean contains(ItemT _item){
+		return stack.contains(_item);
+	}
+
+}

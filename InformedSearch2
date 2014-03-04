@@ -1,0 +1,86 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.util.ActionStatePair;
+import rp13.search.interfaces.SuccessorFunction;
+import rp13.search.interfaces.Agenda;
+import rp13.search.interfaces.GoalTest;
+
+public class InformedSearch<Move, Puzzle> extends HeuristicEightPuzzle<Move, Puzzle>{
+
+	GoalTest<Puzzle> goalState;
+	SuccessorFunction<Move, Puzzle> succ;
+	Agenda<Puzzle> agenda;
+
+	
+	public InformedSearch(GoalTest<Puzzle> goalState,
+			SuccessorFunction<Move, Puzzle> succ, Agenda<Puzzle> agenda) {
+
+		//super();
+		this.goalState = goalState;
+		this.agenda = agenda;
+		this.succ = succ;
+		
+		
+	}
+	
+	
+	
+	public void search(Puzzle state) {
+
+		List<Puzzle> explored = new ArrayList<Puzzle>();
+		List<Puzzle> allsuccessors = new ArrayList<Puzzle>();
+		agenda.push(state);
+
+		while (!agenda.isEmpty()) {
+			state = agenda.pop();
+
+			if (goalState.isGoal(state)) {
+
+				System.out.println("ss");
+				System.out.println(state);
+				break;
+				
+			} 
+			else {
+				explored.add(state);
+
+				List<ActionStatePair<Move, Puzzle>> 
+					successors = new ArrayList<ActionStatePair<Move, Puzzle>>();
+				succ.getSuccessors(state, successors);
+
+				for (ActionStatePair<Move, Puzzle> successor : successors) {
+					if (!explored.contains(successor.getState())) {
+						allsuccessors.add(successor.getState());
+
+					}
+				}
+
+				int count = 0;
+
+				for (int i = 0; i < allsuccessors.size() - 1; i++) {
+					count = i;
+					for (int j = i + 1; j < allsuccessors.size(); j++) {
+						if (Heuristic(allsuccessors.get(j)) > Heuristic(allsuccessors
+								.get(count))) {
+							count = j;
+						}
+					}
+				}
+
+				System.out.println(count);
+				agenda.push(allsuccessors.get(count));
+				allsuccessors.remove(count);
+				Collections.sort(allsuccessors);
+			}
+
+		}
+
+	}
+
+
+	
+
+}

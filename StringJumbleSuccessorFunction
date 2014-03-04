@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+import java.util.List;
+
+import rp13.search.interfaces.SuccessorFunction;
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.util.ActionStatePair;
+
+
+public class StringJumbleSuccessorFunction implements
+		SuccessorFunction<MovePair, StringJumble> {
+
+	
+	public void getSuccessors(StringJumble _state,
+			List<ActionStatePair<MovePair, StringJumble>> _successors) {
+		// TODO Auto-generated method stub
+		assert (_successors != null);
+		
+		//possible moves... 
+		
+		ArrayList<MovePair> possibleMoves = _state.getPossibleMoves();
+		for(int i = 0; i < possibleMoves.size(); i++){
+			MovePair currentPair = possibleMoves.get(i);
+			int m1 = currentPair.getMove1();
+			int m2 = currentPair.getMove2();
+
+			StringJumble successor = new StringJumble(_state.getCurrentString());
+			successor.makeMove(m1, m2);
+			
+//			System.out.println(m1 + " " + m2);
+			
+			System.out.println(successor);
+			
+			_successors.add(new ActionStatePair<MovePair, StringJumble>(currentPair, successor));
+			
+		}
+		
+		
+//		for(MovePair move : possibleMoves){
+//			System.out.println('a');
+//			int i = move.getMove1();
+//			int j = move.getMove2();
+//			System.out.println(i);
+//			System.out.println(j);
+//			isValidMove check in makeMove method
+//			
+//			StringJumble copy = new StringJumble(_state.getCurrentString());
+//			copy.makeMove(move.getMove1(), move.getMove2());
+//			System.out.println(copy);
+////			StringJumble successor = _state;
+//			
+//			_successors.add(new ActionStatePair<MovePair, StringJumble>(move, copy));
+//			
+//			System.out.println(9);
+//		}
+//		
+		
+		
+	}
+
+}

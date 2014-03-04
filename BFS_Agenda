@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import rp13.search.interfaces.Agenda;
+
+public class BFS_Agenda<ItemT> implements Agenda<ItemT> {
+
+	ArrayList<ItemT> Queue = new ArrayList<ItemT>();
+
+	public Iterator<ItemT> iterator() {
+
+		return Queue.iterator();
+	}
+
+	public void push(ItemT _item) {
+		Queue.add(_item);
+	}
+
+	public ItemT pop() {
+		ItemT move = Queue.get(0);
+		Queue.remove(0);
+		return move;
+	}
+
+	public boolean isEmpty() {
+		if (Queue.size() == 0)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean contains(ItemT _item){
+		return Queue.contains(_item);
+	}
+
+}

@@ -1,0 +1,24 @@
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
+
+
+public class Puzzle_1 {
+
+	public static void main(String[] args) {
+		EightPuzzle start = EightPuzzle.randomEightPuzzle();
+		EightPuzzle goal = EightPuzzle.orderedEightPuzzle();
+		
+		EightPuzzleSuccessorFunction successorFunction = new EightPuzzleSuccessorFunction();
+		BFS_Agenda<EightPuzzle> bfsAgenda = new BFS_Agenda();
+		DFS_Agenda<EightPuzzle> dfsAgenda = new DFS_Agenda();
+		
+		UninformedSearch<EightPuzzle, PuzzleMove> bfs = new UninformedSearch(start, goal, successorFunction, bfsAgenda);
+		bfs.run();
+		
+//		UninformedSearch<EightPuzzle, PuzzleMove> dfs = new UninformedSearch(start, goal, successorFunction, dfsAgenda);
+//		dfs.run();
+		
+		
+	}
+
+}

@@ -1,0 +1,54 @@
+package rp13.search.problem.puzzle;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import rp13.search.interfaces.SuccessorFunction;
+import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
+import rp13.search.problem.puzzle.Grid.RobotMove;
+import rp13.search.util.ActionStatePair;
+
+public class GridSuccessorFunction implements
+		SuccessorFunction<RobotMove, Grid> {
+
+	public void getSuccessors(Grid _state,
+			List<ActionStatePair<RobotMove, Grid>> _successors) {
+
+		assert (_successors != null);
+
+		for (RobotMove move : RobotMove.values()) {
+
+			if (_state.isPossibleMove(move)) {
+
+				Grid successor = new Grid(_state);
+
+				successor.makeMove(move);
+
+				_successors.add(new ActionStatePair<Grid.RobotMove, Grid>(move,
+						successor));
+			}
+
+		}
+
+	}
+
+	public static void main(String[] args) {
+		Grid state = new Grid(0);
+		GridSuccessorFunction successorFn = new GridSuccessorFunction();
+
+		List<ActionStatePair<RobotMove, Grid>> successors = new ArrayList<ActionStatePair<RobotMove, Grid>>();
+		;
+		successorFn.getSuccessors(state, successors);
+
+		for (ActionStatePair<RobotMove, Grid> successor : successors) {
+
+			System.out.println("Applied move " + successor.getAction()
+					+ " and got:");
+
+			System.out.println(successor.getState());
+
+		}
+				
+	}
+
+}

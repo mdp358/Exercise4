@@ -1,0 +1,52 @@
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import rp13.search.interfaces.Agenda;
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.problem.puzzle.EightPuzzleSuccessorFunction;
+import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
+import rp13.search.util.ActionStatePair;
+import rp13.search.interfaces.SuccessorFunction;
+
+
+public class InformedAgenda<ItemT> implements rp13.search.interfaces.Agenda<ItemT>{
+
+	
+	ArrayList<ItemT> List = new ArrayList<ItemT>();
+	public Iterator<ItemT> iterator() {
+		return List.iterator();
+	}
+
+	
+	public void push(ItemT _item) {
+		
+		List.add(_item);
+	}
+
+	
+	public ItemT pop() {
+		ItemT move = List.get(0);
+		List.remove(0);
+		
+		return move;
+	}
+
+	public boolean isEmpty() {
+		if(List.size() != 0)
+			return false;
+		else 
+			return true;
+	}
+
+
+	public boolean contains(ItemT _item) {
+		return List.contains(_item);
+	} 
+
+
+	
+	
+	
+}

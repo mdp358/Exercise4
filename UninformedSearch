@@ -1,0 +1,105 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
+
+import rp13.search.interfaces.Agenda;
+import rp13.search.interfaces.SuccessorFunction;
+import rp13.search.problem.puzzle.EightPuzzle;
+import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
+import rp13.search.util.ActionStatePair;
+
+
+public class UninformedSearch<Puzzle, Move> {
+
+	private Puzzle currentState;
+	private Puzzle goalState;
+	private Agenda<Puzzle> agenda;
+
+	private ExploredStates<Puzzle> explored = new ExploredStates<Puzzle>();
+	private ArrayList<ActionStatePair<Puzzle, ActionStatePair<Move, Puzzle>>> linkToParent = new ArrayList<ActionStatePair<Puzzle, ActionStatePair<Move, Puzzle>>>();
+	private ArrayList<ActionStatePair<Move, Puzzle>> path = new ArrayList<ActionStatePair<Move, Puzzle>>();
+	private SuccessorFunction<Move, Puzzle> function;
+	private ArrayList<ActionStatePair<Move, Puzzle>> successors;
+
+	public UninformedSearch(Puzzle initialState, Puzzle goalState, SuccessorFunction<Move, Puzzle> function, Agenda<Puzzle> agenda)
+	{
+		this.currentState = initialState;
+		this.goalState = goalState;
+		this.function = function;
+		this.agenda = agenda;
+	}
+		
+	public void search() {
+		// declare successor function
+//		EightPuzzleSuccessorFunction function = new EightPuzzleSuccessorFunction();
+
+		agenda.push(currentState);
+		boolean checker = true;
+		while (checker == true) {
+			Puzzle state = agenda.pop();
+			explored.add(state);
+			System.out.println(state);
+			if (state.equals(goalState)) {
+				checker = false;
+			} else {
+				successors = new ArrayList<ActionStatePair<Move, Puzzle>>();
+
+				// get successors
+				function.getSuccessors(state, successors);
+
+				// add successors to agenda
+				for (ActionStatePair<Move, Puzzle> actionStatePair : successors) {
+					if (!explored.contains(actionStatePair.getState())
+							&& !agenda.contains(actionStatePair.getState())) {
+						agenda.push(actionStatePair.getState());
+						ActionStatePair<Puzzle, ActionStatePair<Move, Puzzle>> trio = new ActionStatePair(
+								state, actionStatePair);
+						linkToParent.add(trio);
+					}
+
+				}
+			}
+		}
+	}
+	
+	public ArrayList<ActionStatePair<Move, Puzzle>> getPath() {
+		Puzzle parent = goalState;
+		ActionStatePair<Move, Puzzle> start = new ActionStatePair(
+				linkToParent.get(linkToParent.size() - 1).getState()
+						.getAction(), goalState);
+		path.add(start);
+
+		boolean checker = true;
+		while (checker == true) {
+
+			for (int i = linkToParent.size() - 1; i > 0; i--) {
+				if (linkToParent.get(i).getState().getState().equals(parent)) {
+					path.add(linkToParent.get(i).getState());
+					parent = linkToParent.get(i).getAction();
+				} else {
+					checker = false;
+				}
+			}
+		}
+		Collections.reverse(path);
+		return path;
+	}
+	
+	public void run(){
+		this.search();
+		System.out
+				.println("=============================== GOAL STATE REACHED; Making Moves! ===============================");
+		System.out.println(currentState);
+		ArrayList<ActionStatePair<Move, Puzzle>> createPath = this.getPath();
+		for(int i = 0; i < createPath.size() - 1; i++){
+			System.out.println(createPath.get(i).getAction());
+			System.out.println(createPath.get(i).getState());
+		}
+		System.out.println("Taking: " + this.path.size() + " steps");
+	}
+	
+	
+}

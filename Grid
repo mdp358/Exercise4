@@ -1,0 +1,112 @@
+package rp13.search.problem.puzzle;
+
+import java.util.*;
+
+import rp13.search.problem.puzzle.EightPuzzle.PuzzleMove;
+import rp13.search.util.ActionStatePair;
+
+public class Grid {
+
+	
+
+	public enum RobotMove {
+		UP(1), DOWN(-1), LEFT(-10), RIGHT(10);
+
+		private int m_move;
+
+		private RobotMove(int _move) {
+			m_move = _move;
+		}
+
+		private static final RobotMove[] VALUES = values();
+		private static final int SIZE = VALUES.length;
+		private static final Random RANDOM = new Random();
+
+		public static RobotMove randomMove() {
+			return VALUES[RANDOM.nextInt(SIZE)];
+		}
+	}
+
+	protected final static int GOAL = 99;
+	protected final static int WIDTH = 1010;
+	private int simonPosition;
+	private int startingPosition;
+	
+	Grid(int startingPosition){
+		this.simonPosition = startingPosition;
+		this.startingPosition = startingPosition;
+	}
+	
+	public void setSimonPosition(int value){
+		simonPosition = value;
+	}
+	
+	public int getStartingPosition() {
+		return startingPosition;
+	}
+	
+	public Grid(Grid _that) {
+		
+		simonPosition = _that.simonPosition;
+	}
+	
+	public void randomMove() {
+
+		boolean moveMade = false;
+		while (!moveMade) {
+			RobotMove move = RobotMove.randomMove();
+			moveMade = makeMove(move);
+		}
+	}
+
+	public boolean isPossibleMove(RobotMove _move) {
+		int newsimonPosition = simonPosition + _move.m_move;
+
+		if (newsimonPosition >= 0 && newsimonPosition < WIDTH) {
+
+			return (Math.abs(_move.m_move) == 10)
+					|| Math.abs(_move.m_move) == 1;
+
+		}
+
+		return false;
+	}
+
+	public boolean makeMove(RobotMove _move) {
+		if (isPossibleMove(_move)) {
+            
+			int newsimonPosition = simonPosition + _move.m_move;
+			
+			simonPosition = newsimonPosition;
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("current position at: ");
+		sb.append(simonPosition);
+		String position = sb.toString();
+		
+		return position;
+	}
+
+	
+
+	public static void main(String[] args) {
+		
+		Grid g = new Grid(0);
+		
+		for (RobotMove move : RobotMove.values()) {
+		    g.makeMove(move);
+			System.out.println(move);
+			System.out.println(g);
+			g.setSimonPosition(g.getStartingPosition());
+
+		}
+	}
+
+}

@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,18 +8,19 @@ import rp13.search.util.ActionStatePair;
 import rp13.search.interfaces.SuccessorFunction;
 import rp13.search.interfaces.Agenda;
 import rp13.search.interfaces.GoalTest;
+import unused.ExploredStates;
 
-public class InformedSearch<Move, Puzzle> extends HeuristicEightPuzzle<Move, Puzzle>{
+public class InformedSearch<Move, Puzzle> { 
 
-	GoalTest<Puzzle> goalState;
+	Puzzle goalState;
 	SuccessorFunction<Move, Puzzle> succ;
 	Agenda<Puzzle> agenda;
 
 	
-	public InformedSearch(GoalTest<Puzzle> goalState,
+	public InformedSearch(Puzzle goalState,
 			SuccessorFunction<Move, Puzzle> succ, Agenda<Puzzle> agenda) {
 
-		//super();
+		super();
 		this.goalState = goalState;
 		this.agenda = agenda;
 		this.succ = succ;
@@ -30,22 +32,23 @@ public class InformedSearch<Move, Puzzle> extends HeuristicEightPuzzle<Move, Puz
 	
 	public void search(Puzzle state) {
 
-		List<Puzzle> explored = new ArrayList<Puzzle>();
-		List<Puzzle> allsuccessors = new ArrayList<Puzzle>();
+		ExploredStates<Puzzle> explored = new ExploredStates<Puzzle>();
+		ArrayList<Puzzle> allsuccessors = new ArrayList<Puzzle>();
 		agenda.push(state);
 
 		while (!agenda.isEmpty()) {
 			state = agenda.pop();
+			explored.add(state);
+			
+			if (goalState.equals(state)) {
 
-			if (goalState.isGoal(state)) {
-
-				System.out.println("ss");
+				System.out.println("Goal State Found; Making Moves!");
 				System.out.println(state);
 				break;
 				
 			} 
 			else {
-				explored.add(state);
+				
 
 				List<ActionStatePair<Move, Puzzle>> 
 					successors = new ArrayList<ActionStatePair<Move, Puzzle>>();
@@ -58,22 +61,34 @@ public class InformedSearch<Move, Puzzle> extends HeuristicEightPuzzle<Move, Puz
 					}
 				}
 
-				int count = 0;
-
-				for (int i = 0; i < allsuccessors.size() - 1; i++) {
-					count = i;
-					for (int j = i + 1; j < allsuccessors.size(); j++) {
-						if (Heuristic(allsuccessors.get(j)) > Heuristic(allsuccessors
-								.get(count))) {
-							count = j;
-						}
-					}
-				}
-
-				System.out.println(count);
-				agenda.push(allsuccessors.get(count));
-				allsuccessors.remove(count);
-				Collections.sort(allsuccessors);
+				//code here
+				//sorting happening 
+				
+				
+//				int count = 0;
+//
+//				for (int i = 0; i < allsuccessors.size() - 1; i++) {
+//					Puzzle successor1 = allsuccessors.get(i);
+//					//count = i;
+//					for (int j = i + 1; j < allsuccessors.size(); j++) {
+//						Puzzle successor2 = allsuccessors.get(j);
+//						
+//						if(successor1.Heuristic(goalState) > successor1.Heuristic(goalState) ){
+//							
+//						}
+//						
+//						
+//						if (Heuristic(allsuccessors.get(j)) > Heuristic(allsuccessors
+//								.get(count))) {
+//							count = j;
+//						}
+//					}
+//				}
+//
+//				System.out.println(count);
+//				agenda.push(allsuccessors.get(count));
+//				allsuccessors.remove(count);
+//				Collections.sort(allsuccessors); //use nick's collection class for successor
 			}
 
 		}

@@ -10,42 +10,85 @@ import rp13.search.util.ActionStatePair;
 import rp13.search.interfaces.SuccessorFunction;
 
 
+/**
+ * Agenda for the informedSearch. 
+ *
+ * @param <ItemT>  The type of the item contained in the agenda which implements from the interface Agenda. 
+ */
+/**
+ * @author mao314
+ *
+ * @param <ItemT>
+ */
 public class InformedAgenda<ItemT> implements rp13.search.interfaces.Agenda<ItemT>{
 
-	
-	ArrayList<ItemT> List = new ArrayList<ItemT>();
-	public Iterator<ItemT> iterator() {
-		return List.iterator();
-	}
+//List of the items in a new ArrayList. 
+ArrayList<ItemT> List = new ArrayList<ItemT>();
 
-	
-	public void push(ItemT _item) {
-		
-		List.add(_item);
-	}
+/* (non-Javadoc)
+ * @see java.lang.Iterable#iterator()
+ */
+/**
+ * @return returns the list using the iterator, the iterator will return over a set of elements. 
+ */
+public Iterator<ItemT> iterator() {
 
-	
-	public ItemT pop() {
-		ItemT move = List.get(0);
-		List.remove(0);
-		
-		return move;
-	}
+	return List.iterator();
 
-	public boolean isEmpty() {
-		if(List.size() != 0)
-			return false;
-		else 
-			return true;
-	}
+}
+/* (non-Javadoc)
+ * @see rp13.search.interfaces.Agenda#push(java.lang.Object)
+ */
+/**
+ * Push method from the agenda which will add the item into the list. 
+ */
+
+public void push(ItemT _item) {
+
+List.add(_item);
+}
+
+/* (non-Javadoc)
+ * @see rp13.search.interfaces.Agenda#pop(java.lang.Object)
+ */
+/**
+ * It will get the move from the list and remove it
+ * @return will return the move after it's being popped/removed. 
+ */
+public ItemT pop() {
+ItemT move = List.get(0);
+List.remove(0);
+
+return move;
+}
+
+/**
+ * Checks whether the list is empty. 
+ * @return return boolean value depending if the list is empty or not. 
+ */
+/* (non-Javadoc)
+ * @see rp13.search.interfaces.Agenda#isEmpty()
+ */
+public boolean isEmpty() {
+if(List.size() != 0)
+return false;
+else
+return true;
+}
+
+/**
+ * Check if the item is contained within the list. 
+ * @return return boolean value depending if the item is within the list. 
+ */
+/* (non-Javadoc)
+ * @see rp13.search.interfaces.Agenda#contains(java.lang.Object)
+ */
+public boolean contains(ItemT _item) {
+return List.contains(_item);
+}
 
 
-	public boolean contains(ItemT _item) {
-		return List.contains(_item);
-	} 
 
 
-	
-	
-	
+
 }

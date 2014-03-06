@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,15 +7,28 @@ import rp13.search.util.ActionStatePair;
 import rp13.search.interfaces.SuccessorFunction;
 import rp13.search.interfaces.Agenda;
 import rp13.search.interfaces.GoalTest;
-import unused.ExploredStates;
 
+
+/**
+ *@author mao314
+ *Informed Search, missing sort. 
+ *
+ * @param <Move> the move of the puzzle
+ * @param <Puzzle> The puzzle which is going to be represented.
+ */
 public class InformedSearch<Move, Puzzle> { 
 
+	//Set the goalState, agenda and succ. 
 	Puzzle goalState;
 	SuccessorFunction<Move, Puzzle> succ;
 	Agenda<Puzzle> agenda;
 
-	
+/**
+ * 	Constructor for informed search taking the variables. 
+ * @param goalState the goal state of the puzzle. 
+ * @param succ The successor function with the moves of the puzzle
+ * @param agenda The agenda which is represented for the puzzle. 
+ */
 	public InformedSearch(Puzzle goalState,
 			SuccessorFunction<Move, Puzzle> succ, Agenda<Puzzle> agenda) {
 
@@ -24,22 +36,28 @@ public class InformedSearch<Move, Puzzle> {
 		this.goalState = goalState;
 		this.agenda = agenda;
 		this.succ = succ;
-		
-		
+
 	}
 	
 	
-	
+	/**
+	 * Search which would take the state and find the goalstate. 
+	 * @param state the state of the puzzle when search is started. 
+	 */
 	public void search(Puzzle state) {
-
+		//Set the exploredStates which represents states which are already used so it won't have dublicates.
 		ExploredStates<Puzzle> explored = new ExploredStates<Puzzle>();
+		//Set an ArrayList which contains all the successors of the puzzle state. 
 		ArrayList<Puzzle> allsuccessors = new ArrayList<Puzzle>();
+		//push the state from agenda. 
 		agenda.push(state);
-
+//run while the agenda isn't empty. 
 		while (!agenda.isEmpty()) {
+			//set the next state by getting it from the agenda. 
 			state = agenda.pop();
+			//Add it to explored so it won't be used again. 
 			explored.add(state);
-			
+			//If the goalState is equals to the state print out state and break. 
 			if (goalState.equals(state)) {
 
 				System.out.println("Goal State Found; Making Moves!");
@@ -47,13 +65,16 @@ public class InformedSearch<Move, Puzzle> {
 				break;
 				
 			} 
+			//If not found create list of the actionstatepair.
 			else {
 				
 
 				List<ActionStatePair<Move, Puzzle>> 
 					successors = new ArrayList<ActionStatePair<Move, Puzzle>>();
+				//the succ will get the successors state and it's successors. 
 				succ.getSuccessors(state, successors);
-
+				//while the actionstate pair has successors if the explored doesn't contain add the successor and state
+				//into the the arrayList allsuccessors. 
 				for (ActionStatePair<Move, Puzzle> successor : successors) {
 					if (!explored.contains(successor.getState())) {
 						allsuccessors.add(successor.getState());
@@ -64,7 +85,7 @@ public class InformedSearch<Move, Puzzle> {
 				//code here
 				//sorting happening 
 				
-				
+				// this meant to use the heuristic from the heuristic to represent sorting but given up. 
 //				int count = 0;
 //
 //				for (int i = 0; i < allsuccessors.size() - 1; i++) {
